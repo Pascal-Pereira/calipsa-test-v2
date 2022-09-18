@@ -1,0 +1,87 @@
+### AuthController - Login
+POST http://localhost:3000/email  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "rrrrrrrrrrrrrr@skai.pt",
+    "password": "rrrrrrrrrrrrr"
+}
+
+### AuthController - Login
+POST http://localhost:3000/email  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "df@df.com",
+    "password": "Enyosolutions&69"
+}
+### AuthController - Login
+POST http://localhost:1337/api/auth/login  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "rraaaaaraaaa@skai.pt",
+    "password": "Pereir&51"
+}
+
+
+####UserSqlController
+###UserSqlController - CREATE USER
+POST http://localhost:1337/api/auth/register HTTP/1.1
+content-type: application/json
+
+{
+    "email": "rraaaaaraaaa@skai.pt",
+    "firstName": "Pascal",
+    "lastName": "Pereira",
+    "password": "Pereir&51",
+    "accountType": "client"
+}
+
+###UserSqlController - UPDATE USER - User with no account id
+PUT http://localhost:1337/api/user/5  HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJtb2lAeWFob28uZnIiLCJyb2xlcyI6WyJVU0VSIl0sImlhdCI6MTYxMTE4MzE5NywiZXhwIjoxNjExNzg3OTk3fQ.6MmDNqgB8LmaC4rqGnKzkEBSbyE25GZLOhDestIN8Nk
+
+{
+    "accountType": "proviclientder"
+}
+
+###UserSqlController - CHANGE EMAIL
+PUT http://localhost:1337/api/user/15/email  HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUsImVtYWlsIjoiY2F0QGZvbnNlY2EucHQiLCJyb2xlcyI6WyJVU0VSIl0sImlhdCI6MTYxMTA4MTQzOSwiZXhwIjoxNjExNjg2MjM5fQ.sCX_Cu-IKsMTiFBlR19WIQk8rJec3W1jAoWJYsOKZ9o
+
+{
+    "email": "catalina@fons.pt",
+    "password": "Pereir&51"
+}
+###UserSqlController - CONFIRM EMAIL
+GET http://localhost:1337/api/auth/email/update/:email  HTTP/1.1
+
+{
+}
+
+###UserSqlController - CHANGE PWD
+PUT http://localhost:1337/api/user/17/password  HTTP/1.1
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoicGFzY2FsQHNraWxsbGluay5wdCIsInJvbGVzIjpbIlVTRVIiXSwiaWF0IjoxNjExMTgzMzY2LCJleHAiOjE2MTE3ODgxNjZ9.PmJCev-oy41fN2SOKqfoUegLucm7oV3kNR2mZn9TeEY
+
+{
+    "password": "Pereir&511",
+    "newPassword": "Pereir&511"
+}
+
+###UserSqlController - CONTACT ADMIN
+POST http://localhost:1337/api/contactadmin  HTTP/1.1
+content-type: application/json
+
+{
+    "firstName": "Roman",
+    "lastName": "Douatello",
+    "email": "rd@marina.pt",
+    "subject": "contact",
+    "message": "my message"
+}
+
+
