@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
 const express = require('express');
 const emailRouter = require('./routes/index');
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const dotenv = require("dotenv");
 dotenv.config();
 const app = express();
 const PORT = 3000;
 const db = require('./db');
+
+// Not safe, be more specific in the origin, since it s only a test, I ll keep it that way
+app.use(cors({ origin: '*' }))
 
 db.init();
 

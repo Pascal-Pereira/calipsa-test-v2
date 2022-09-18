@@ -1,4 +1,4 @@
-### AuthController - Login
+### EMAIL - CREATE AN EMAIL
 POST http://localhost:3000/email  HTTP/1.1
 content-type: application/json
 
@@ -6,6 +6,14 @@ content-type: application/json
     "email": "rrrrrrrrrrrrrr@skai.pt",
     "password": "rrrrrrrrrrrrr"
 }
+
+### EMAIL - GET EMAILS
+GET http://localhost:3000/email  HTTP/1.1
+content-type: application/json
+
+{
+}
+
 
 ### AuthController - Login
 POST http://localhost:3000/email  HTTP/1.1

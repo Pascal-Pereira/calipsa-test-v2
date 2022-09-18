@@ -76,8 +76,6 @@ export default {
       return this.config.features.facebookLogin;
     },
   },
-  mounted() {
-  },
   methods: {},
 };
 </script>

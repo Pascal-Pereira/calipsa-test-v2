@@ -106,7 +106,7 @@ class UsersController {
 
             return res.status(201).send(data);
         } catch (err) {
-            console.error('[ERROR USER CONTROLLER][CREATE]_____email_____', err.message, res);
+            console.error('[ERROR USER CONTROLLER][CREATE]_____email_____', err.message);
             res.status(500).send({
                 errorMessage: err.message || 'Some error occurred while creating the User.'
             });
@@ -118,6 +118,7 @@ class UsersController {
             const data = (await User.getAll()).map(c => c);
             res.send({ data });
         } catch (err) {
+            console.error('[ERROR USER CONTROLLER][FIND ALL]_____email_____', err.message);
             res.status(500).send({
                 errorMessage: err.message || 'Some error occurred while retrieving users.'
             });
@@ -217,7 +218,7 @@ class UsersController {
         } catch (err) {
             if (err.kind === 'not_found') {
                 res.status(404).send({
-                    message: `Not found User with id ${req.params.id}.`
+                    message: `User Not found with id ${req.params.id}.`
                 });
             } else {
                 res.status(500).send({

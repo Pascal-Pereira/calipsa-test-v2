@@ -21,31 +21,6 @@ class User {
       })
   }
 
-  static async findById (id) {
-    return db.query('SELECT * FROM user WHERE id = ?', [id])
-      .then(rows => {
-        if (rows.length) {
-          return Promise.resolve({ ...rows[0], password: '' });
-        } else {
-          const err = new Error();
-          err.kind = 'not_found';
-          return Promise.reject(err);
-        }
-      });
-  }
-
-  static async findByEmail (email) {
-    return db.query('SELECT * FROM user WHERE email = ?', [email])
-      .then(rows => {
-        if (rows.length) {
-          return Promise.resolve(rows[0]);
-        } else {
-          const err = new Error();
-          err.kind = 'not_found';
-          return Promise.reject(err);
-        }
-      });
-  }
 
   static async emailAlreadyExists (email) {
     return db.query('SELECT * FROM user WHERE email = ?', [email])
@@ -60,14 +35,10 @@ class User {
 
   static async getAll (result) {
     return db.query('SELECT * FROM user')
-      .then(rows => rows.map(row => ({ ...row, password: '' })));
-  }
-
-  static async updateById (id, user) {
-    return db.query(
-      'UPDATE user SET email = ?, firstname = ?, lastname = ?, siret = ?, is_validated = ?, last_connection_date = ?, registration_date = ?, `key` = ? WHERE id = ?',
-      [user.email, user.firstname, user.lastname, user.siret, user.is_validated, user.last_connection_date, user.registration_date, user.key, id]
-    ).then(() => this.findById(id));
+      .then(rows => rows.map(row => {
+        delete row.password;
+        return row;
+      }));
   }
 
   static async login (email, password) {
@@ -89,7 +60,7 @@ class User {
       }
     }
   }
-
+  
   static async remove (id) {
     return db.query('DELETE FROM user WHERE id = ?', id).then(res => {
       if (res.affectedRows !== 0) {
@@ -102,9 +73,6 @@ class User {
     });
   }
 
-  static async removeAll (result) {
-    return db.query('DELETE FROM user WHERE id = ?');
-  }
 }
 
 module.exports = User;
