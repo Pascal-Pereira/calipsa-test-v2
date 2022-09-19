@@ -20,8 +20,7 @@ app.use(bodyParser.urlencoded({ limit: '512mb', extended: true }));
 app.use('/email',emailRouter);
 
 
-app.get('/', (req, res) => {
-})
+
 app.listen(PORT, (error) => {
   if (!error)
     console.log(`Server is Successfully Running,;
