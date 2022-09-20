@@ -18,8 +18,5 @@ router.delete('/:id', mailController.delete);
 // Route for getting all the emails
 router.get('/', mailController.findAll);
 
-router.get('/googleLogin', AuthController.gmailAuth);
-
-router.post('/googleCallback', AuthController.googleCallback);
 
 module.exports = router;

@@ -8,9 +8,19 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 const db = require('./db');
+const AuthController = require('./controller/authController');
 
 // Not safe, be more specific in the origin, since it s only a test, I ll keep it that way
 app.use(cors({ origin: '*' }))
+
+// request gmail access
+
+app.get('/', (req,res) => console.log('yooooooooooooooooooooo'));
+
+app.post('/auth/gmail', AuthController.gmailAuth);
+
+app.get('/auth/google/callback', AuthController.googleCallback);
+
 
 db.init();
 

@@ -7,7 +7,7 @@ const config = require('./local.config');
 class Database {
   init () {
     try {
-      console.log('[MYSQL] init mySQL connection', config);
+      console.log('[MYSQL] init mySQL connection', config.mysql);
       this.connection = mysql.createPool(config);
       console.log('[MYSQL] initMysql successfull');
     } catch (e) {

@@ -1,3 +1,17 @@
+### LOGIN 
+GET http://localhost:3000/auth/gmail?redirectUrl=http://localhost:3000/auth/google/callback HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### LOGIN 
+GET http://localhost:3000/auth/google/callback HTTP/1.1
+content-type: application/json
+
+{
+}
+
 ### EMAIL - CREATE AN EMAIL
 POST http://localhost:3000/email  HTTP/1.1
 content-type: application/json
@@ -6,6 +20,16 @@ content-type: application/json
     "email": "rrrrrrrrrrrrrr@skai.pt",
     "password": "rrrrrrrrrrrrr"
 }
+
+### EMAIL - SEND AN EMAIL
+POST http://localhost:3000/email-sent  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "rrrrrrrrrrrrrr@skai.pt",
+    "content" : "yoooooooooooooooooooooooooo"
+}
+
 
 ### EMAIL - GET EMAILS
 GET http://localhost:3000/email  HTTP/1.1
@@ -16,12 +40,10 @@ content-type: application/json
 
 
 ### AuthController - Login
-POST http://localhost:3000/email  HTTP/1.1
+GET http://localhost:3000/login  HTTP/1.1
 content-type: application/json
 
 {
-    "email": "df@df.com",
-    "password": "Enyosolutions&69"
 }
 ### AuthController - Login
 POST http://localhost:1337/api/auth/login  HTTP/1.1

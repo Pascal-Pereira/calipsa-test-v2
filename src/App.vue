@@ -12,6 +12,7 @@
 
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/dashboard">Dashboard</RouterLink>
+        <RouterLink to="/email">Email</RouterLink>
       </nav>
     </div>
   </header>

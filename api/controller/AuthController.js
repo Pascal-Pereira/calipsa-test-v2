@@ -12,16 +12,17 @@ const GoogleAuthService = require('../services/GoogleAuthService');
 module.exports = {
 
   gmailAuth(req, res) {
+    console.log('gmailAuth gmailAuth');
     res.json({
       body: GoogleAuthService.getGmailUrl('', req.query.redirectUrl)
     });
   },
 
   googleCallback(req, res, next) {
-    const googleToken = req.query.token || req.body.credential || req.body;
+    const googleToken = req.query.code;
+    console.log('resssssssssssss', req.query);
     // t is the invitation token
     // features are the enabled features
-    const { t, features } = req.body;
     let avatarUrl;
     let email;
     let token;
@@ -115,8 +116,7 @@ module.exports = {
         });
       })
       .catch((err) => {
-        axel.logger.warn(err && err.message ? err.message : err);
-        Utils.errorCallback(err, res);
+        console.error('googleCallback, err', err.message)
       });
   },
 }
