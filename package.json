@@ -10,7 +10,9 @@
   "dependencies": {
     "axios": "^0.27.2",
     "i": "^0.3.7",
+    "maildev": "^2.0.5",
     "mysql2": "^2.3.3",
+    "nodemailer-sendgrid-transport": "^0.2.0",
     "npm": "^8.19.2",
     "vue": "^3.2.38",
     "vue-axios": "^3.4.1",

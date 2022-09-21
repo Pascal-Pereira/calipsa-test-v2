@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 require('dotenv').config();
 const mysql = require('mysql2');
-
-const config = require('./local.config');
+const config = require('./db.config');
 
 class Database {
   init () {

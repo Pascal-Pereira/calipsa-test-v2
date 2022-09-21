@@ -3,7 +3,7 @@
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="300" height="150" />
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Home</RouterLink>
