@@ -8,7 +8,7 @@ dotenv.config();
 const app = express();
 const PORT = 3000;
 const db = require('./db');
-const AuthController = require('./controller/authController');
+// const AuthController = require('./controller/authController');
 
 app.use(bodyParser.json({ limit: '512mb' }));
 app.use(bodyParser.urlencoded({ limit: '512mb', extended: true }));
@@ -22,9 +22,9 @@ app.use(cors({ origin: '*' }))
 // request gmail access
 app.use('/email',emailRouter);
 
-app.post('/auth/gmail', AuthController.gmailAuth);
+// app.post('/auth/gmail', AuthController.gmailAuth);
 
-app.get('/auth/google/callback', AuthController.googleCallback);
+// app.get('/auth/google/callback', AuthController.googleCallback);
 
 
 

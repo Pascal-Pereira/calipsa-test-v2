@@ -3,10 +3,10 @@
 const express = require('express');
 const router = express.Router();
 const mailController = require('../controller/mailController');
-const AuthController = require('../controller/authController');
+// const AuthController = require('../controller/authController');
 
-router.get('/login', (req, res) => {
-})
+// router.get('/login', (req, res) => {
+// })
 
 // Route for creation of an email
 router.post('/', mailController.create);
