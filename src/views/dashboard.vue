@@ -139,9 +139,6 @@ export default {
       });
   },
   methods: {
-    handleEmailToAddInput(email) {
-      localStorage.setItem("currentEmail", email);
-    },
     setInfoToLocalStorage(prop, value) {
       localStorage.setItem(prop, value);
     },

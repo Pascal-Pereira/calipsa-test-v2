@@ -24,9 +24,6 @@ app.use('/email',emailRouter);
 
 app.post('/auth/gmail', AuthController.gmailAuth);
 
-
-
-
 app.get('/auth/google/callback', AuthController.googleCallback);
 
 
