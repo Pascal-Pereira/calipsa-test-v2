@@ -97,15 +97,18 @@ class mailController {
     }
 
     static async sendEmail(req, res) {
-        const { recipient, message } = req.body;
+        const { recipient,subject, message } = req.body;
         if(!recipient) {
             return res.status(400).send('Missing recipient')
+        }
+        if(!subject) {
+            return res.status(400).send('Missing subject')
         }
         if(!recipient || !message) {
             return res.status(400).send('Missing message')
         }
         try {
-            await MailService.sendEmail(recipient, message);
+            await MailService.sendEmail(recipient, subject, message);
             res.send(`Email sent to ${recipient}`);
         } catch (err) {
             console.error('[ERROR MAILCONTROLLER sendEmail', err)
