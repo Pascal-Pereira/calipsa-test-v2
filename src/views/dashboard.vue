@@ -15,6 +15,9 @@
           name="email"
           placeholder="roger.federer@goat.com"
           v-model="currentEmailInput.email"
+          @change="
+            () => setInfoToLocalStorage('currentEmail', currentEmailInput.email)
+          "
         />
 
         <div class="options"></div>
@@ -59,6 +62,9 @@
         v-model="emailInModal.recipient"
         name="email"
         placeholder="Your Email"
+        @change="
+          () => setInfoToLocalStorage('recipient', emailInModal.recipient)
+        "
       />
       <label>Subject</label>
       <input
@@ -66,6 +72,7 @@
         v-model="emailInModal.subject"
         name="subject"
         placeholder="Your subject"
+        @change="() => setInfoToLocalStorage('subject', emailInModal.subject)"
       />
       <label>Message</label>
       <textarea
@@ -74,6 +81,7 @@
         cols="30"
         rows="5"
         placeholder="Please write your Message"
+        @change="() => setInfoToLocalStorage('message', emailInModal.message)"
       >
       </textarea>
 
@@ -98,8 +106,8 @@ export default {
       emailInModal: {
         id: null,
         recipient: "",
+        subject: "",
         message: "",
-        subject: ''
       },
       emailList: [],
       currentEmailInput: {
@@ -113,6 +121,10 @@ export default {
     },
   },
   mounted() {
+    this.currentEmailInput.email = localStorage.getItem("currentEmail");
+    this.emailInModal.recipient = localStorage.getItem("recipient");
+    this.emailInModal.subject = localStorage.getItem("subject");
+    this.emailInModal.message = localStorage.getItem("message");
     const url = "http://localhost:3000/email";
     // const url = `${process.env.BASEURL}/email`;
     axios
@@ -127,6 +139,12 @@ export default {
       });
   },
   methods: {
+    handleEmailToAddInput(email) {
+      localStorage.setItem("currentEmail", email);
+    },
+    setInfoToLocalStorage(prop, value) {
+      localStorage.setItem(prop, value);
+    },
     sendEmail() {
       const url = "http://localhost:3000/email/email-sent";
       axios
@@ -142,11 +160,12 @@ export default {
         });
     },
     openEmailModal(emailObj) {
+      this.setInfoToLocalStorage("recipient", emailObj.email);
       this.modalOpened = true;
       this.emailInModal = {
         id: emailObj.id,
         recipient: emailObj.email,
-        subject: emailObj.subject
+        subject: emailObj.subject,
       };
     },
     closeModal() {
