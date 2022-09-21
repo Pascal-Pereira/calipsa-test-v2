@@ -14,12 +14,12 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-async function sendMail(recipient) {
+async function sendEmail(recipient, message) {
   try {
     const accessToken = await oAuth2Client.getAccessToken();
 
     const transport = nodemailer.createTransport({
-      service: 'gmail', 
+      service: 'gmail',
       auth: {
         type: 'OAuth2',
         user: 'pereira.pascal@gmail.com',
@@ -32,23 +32,16 @@ async function sendMail(recipient) {
 
     const mailOptions = {
       from: 'pereira.pascal@gmail.com',
-      to: 'pacalinho@yahoo.fr',
+      to: recipient,
       subject: 'Hello from gmail using API',
-      text: 'Hello from gmail email using API',
-      html: '<h1>Hello from gmail email using API</h1>',
+      text: message,
     };
 
     const result = await transport.sendMail(mailOptions);
-    console.log('ressssssssssssssssssssss', result);
     return result;
   } catch (error) {
     return error;
   }
 }
 
-sendMail()
-  .then((result) => console.log('Email sent...', result))
-  .catch((error) => console.log(error.message));
-
-
-// module.exports = MailService;
+module.exports = { sendEmail };

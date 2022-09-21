@@ -10,24 +10,27 @@ const PORT = 3000;
 const db = require('./db');
 const AuthController = require('./controller/authController');
 
+app.use(bodyParser.json({ limit: '512mb' }));
+app.use(bodyParser.urlencoded({ limit: '512mb', extended: true }));
+
+
+db.init();
 // Not safe, be more specific in the origin, since it s only a test, I ll keep it that way
 app.use(cors({ origin: '*' }))
 
+// Route for creation of an email
 // request gmail access
-
-app.get('/', (req,res) => console.log('yooooooooooooooooooooo'));
+app.use('/email',emailRouter);
 
 app.post('/auth/gmail', AuthController.gmailAuth);
+
+
+
 
 app.get('/auth/google/callback', AuthController.googleCallback);
 
 
-db.init();
 
-app.use(bodyParser.json({ limit: '512mb' }));
-app.use(bodyParser.urlencoded({ limit: '512mb', extended: true }));
-
-app.use('/email',emailRouter);
 
 
 

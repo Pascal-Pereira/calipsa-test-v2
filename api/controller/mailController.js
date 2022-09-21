@@ -1,76 +1,13 @@
 /* eslint-disable prettier/prettier */
 require('dotenv').config();
 const Mail = require('../models/mail.model.js');
-const nodemailer = require('nodemailer');
-const argon2 = require('argon2');
-const jwt = require('jsonwebtoken');
+const MailService = require('../services/MailService');
+
 
 const validateEmail = email => {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 };
-
-
-
-// Création du transporteur pour l'envoi d'mails (NodeMailer)
-async function sendEmail(data) {
-    // Transporteur
-    const transporter = nodemailer.createTransport({
-        host: 'in-v3.mailjet.com',
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
-
-    /* const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_SMTP_HOST,
-      port: parseInt(process.env.EMAIL_SMTP_PORT), // 587
-      secure: isSecureConnection, // process.env.EMAIL_SMTP_SECURE, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL_USER, // User
-        pass: process.env.EMAIL_PASS, // Password
-        clientId: process.env.EMAIL_SMTP_CLIENT_ID,
-        clientSecret: process.env.EMAIL_SMTP_CLIENT_SECRET,
-        refreshToken: process.env.EMAIL_SMTP_REFRESH_TOKEN,
-        accessToken: process.env.EMAIL_SMTP_ACCESS_TOKEN,
-        expires: process.env.EMAIL_SMTP_EXPIRES
-      }
-    }); */
-
-    try {
-        const emailBody = {
-            from: 'Pierre Ammeloot <pierre@ammeloot.fr>',
-            to: `${data.firstname} ${data.lastname} ${data.email}`,
-            subject: 'Annuaire des Freelances Lyonnais - Le processus d’inscription est bientôt terminé',
-            Text: `Cher(e) Freelance Lyonnais,
-      Nous te remercions pour ton inscription sur l’annuaire des Freelances Lyonnais.
-      Il ne te reste plus qu'à valider ton adresse email en collant le lien ci-dessous dans ton navigateur :
-      A bientôt,
-      Pierre.
-
-      "${process.env.BASE_URL}/users/validation_email?email=${data.email}&key=${data.key}"`,
-
-            html: `<p>Cher(e) Freelance Lyonnais,</Il>
-      <p>Nous te remercions pour ton inscription sur l’annuaire des Freelances Lyonnais.</p>
-      <p>Il ne te reste plus qu'à valider ton adresse email en copiant ou cliquant sur le lien ci-dessous :</p>
-      <a href="${process.env.BASE_URL}/users/validation_email?email=${data.email}&key=${data.key}">Vérification email</a>
-      <p>À bientôt,</p>
-      <p>Pierre</p>`
-        };
-
-        if (process.env.NODE_ENV !== 'test') {
-            await transporter.sendMail(emailBody);
-        }
-    } catch (error) {
-        return console.error('Erreur', error);
-    }
-}
 
 class mailController {
     static async create(req, res) {
@@ -156,6 +93,25 @@ class mailController {
                     message: 'Could not delete email with id ' + req.params.id
                 });
             }
+        }
+    }
+
+    static async sendEmail(req, res) {
+        const { recipient, message } = req.body;
+        if(!recipient) {
+            return res.status(400).send('Missing recipient')
+        }
+        if(!recipient || !message) {
+            return res.status(400).send('Missing message')
+        }
+        try {
+            await MailService.sendEmail(recipient, message);
+            res.send(`Email sent to ${recipient}`);
+        } catch (err) {
+            console.error('[ERROR MAILCONTROLLER sendEmail', err)
+            res.status(500).send({
+                message: 'Could not send email with recipient ' + recipient
+            });
         }
     }
 }

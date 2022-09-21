@@ -19,7 +19,7 @@
 
         <div class="options"></div>
 
-        <input type="submit" value="Add todo" />
+        <input type="submit" value="Add email" />
       </form>
     </section>
 
@@ -28,26 +28,79 @@
       <div class="list" id="todo-list">
         <div class="todo-item" v-for="item of emailList" :key="item.id">
           <div class="todo-content">
-            <p>
-              {{ item.email }}
-            </p>
+            <input
+              :id="item.id"
+              type="email"
+              v-model="item.email"
+              @change="(event) => handleEmail(event, item.id)"
+            />
+          </div>
+
+          <div class="actions">
+            <button class="send-email" @click="openEmailModal(item)">
+              Send email
+            </button>
           </div>
 
           <div class="actions">
             <button class="delete" @click="removeEmail(item.id)">Delete</button>
           </div>
+          <!-- <EmailForm>
+          </EmailForm> -->
         </div>
       </div>
     </section>
   </main>
+  <div v-show="modalOpened" class="container">
+    <form @submit.prevent="sendEmail">
+      <label>Email</label>
+      <input
+        type="email"
+        v-model="emailInModal.recipient"
+        name="email"
+        placeholder="Your Email"
+      />
+      <label>Subject</label>
+      <input
+        type="text"
+        v-model="emailInModal.subject"
+        name="subject"
+        placeholder="Your subject"
+      />
+      <label>Message</label>
+      <textarea
+        name="message"
+        v-model="emailInModal.message"
+        cols="30"
+        rows="5"
+        placeholder="Please write your Message"
+      >
+      </textarea>
+
+      <input type="submit" value="Send" />
+
+      <div class="actions">
+        <button class="delete" @click="closeModal()">Close</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+//import EmailForm from "../components/EmailForm";
+
 export default {
-  components: {},
+  // components: { EmailForm },
   data() {
     return {
+      modalOpened: false,
+      emailInModal: {
+        id: null,
+        recipient: "",
+        message: "",
+        subject: ''
+      },
       emailList: [],
       currentEmailInput: {
         email: "",
@@ -74,6 +127,34 @@ export default {
       });
   },
   methods: {
+    sendEmail() {
+      const url = "http://localhost:3000/email/email-sent";
+      axios
+        .post(url, this.emailInModal)
+        .then((res) => {
+          if (res && res.data) {
+            this.emailInModal = {};
+            this.modalOpened = false;
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    },
+    openEmailModal(emailObj) {
+      this.modalOpened = true;
+      this.emailInModal = {
+        id: emailObj.id,
+        recipient: emailObj.email,
+        subject: emailObj.subject
+      };
+    },
+    closeModal() {
+      this.modalOpened = false;
+    },
+    handleEmail(id) {
+      console.log("innnnnnnnnnnnnnnnn", id);
+    },
     addEmail() {
       const url = "http://localhost:3000/email";
       axios
@@ -128,5 +209,49 @@ export default {
     display: flex;
     align-items: center;
   }
+}
+* {
+  box-sizing: border-box;
+}
+
+label {
+  float: left;
+}
+input[type="text"],
+[type="email"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  resize: vertical;
+}
+
+input[type="submit"] {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: #b8c7b9;
+}
+
+.container {
+  display: block;
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  width: 50%;
+  top: -53vh;
+  position: relative;
 }
 </style>
