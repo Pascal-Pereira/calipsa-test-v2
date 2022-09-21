@@ -88,7 +88,7 @@
       <input type="submit" value="Send" />
 
       <div class="actions">
-        <button class="delete" @click="closeModal()">Close</button>
+        <button type="button" class="delete" @click="closeModal()">Close</button>
       </div>
     </form>
   </div>
