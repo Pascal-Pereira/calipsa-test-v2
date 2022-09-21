@@ -15,11 +15,19 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
+const MailDev = require("maildev");
+const maildev = new MailDev();
+maildev.listen();
+maildev.on("new", function (email) {
+  console.log('emaillyou have a new email', email);
+});
+
 async function getTransport() {
   let transporter;
   const accessToken = await oAuth2Client.getAccessToken();
 
   // create Nodemailer SES transporter
+  
   switch (transport) {
       case 'sendgrid':
         transporter = nodemailer.createTransport(sgTransport(sendgrid));
