@@ -1,0 +1,41 @@
+### EMAIL - CREATE AN EMAIL
+POST http://localhost:3000/email/email-sent  HTTP/1.1
+content-type: application/json
+
+{
+    "recipient": "pereira.pascal@gmail.com",
+    "subject": "rrrrrrrrrrr",
+    "message": "aaaaaaaaaaaaaaaa"
+}
+
+### EMAIL - CREATE AN EMAIL
+POST http://localhost:3000/email  HTTP/1.1
+content-type: application/json
+
+{
+    "email": "rrrrrrrrrrrrrr@skai.pt",
+    "password": "rrrrrrrrrrrrr"
+}
+
+
+
+### LOGIN 
+GET http://localhost:3000/auth/gmail?redirectUrl=http://localhost:3000/auth/google/callback HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### LOGIN 
+GET http://localhost:3000/auth/google/callback HTTP/1.1
+content-type: application/json
+
+{
+}
+
+### EMAIL - GET EMAILS
+GET http://localhost:3000/email  HTTP/1.1
+content-type: application/json
+
+{
+}

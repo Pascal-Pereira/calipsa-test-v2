@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 
 module.exports = {
-    google: {
+    googleInfos: {
         CLIENT_ID: '471216317867-enmtg7vifl2aoj8iq0br506pltujugcp.apps.googleusercontent.com',
         CLIENT_SECRET: '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',
         REDIRECT_URI: 'https://developers.google.com/oauthplayground',

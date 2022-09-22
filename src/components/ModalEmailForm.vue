@@ -66,7 +66,7 @@ export default {
       return email && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
     },
     sendEmail() {
-      if (!this.validateEmail(this.modalInfos)) {
+      if (!this.validateEmail(this.modalInfos.recipient)) {
         this.isEmailValid = false;
         return;
       }
@@ -137,6 +137,7 @@ input[type="submit"]:hover {
   padding: 20px;
   width: 50%;
   top: 300px;
+  left: 25vw;
   position: absolute;
 }
 </style>

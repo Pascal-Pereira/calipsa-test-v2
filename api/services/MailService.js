@@ -3,11 +3,12 @@ const nodemailer = require('nodemailer');
 const { google } = require('googleapis');
 const sgTransport = require('nodemailer-sendgrid-transport');
 const config = require('../local.config');
-
-// These id's and secrets should come from .env file.
-const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN, sendgrid, mail } =  config;
+const MailDev = require("maildev");
+const maildev = new MailDev();
+const { googleInfos , sendgrid, mail } = config;
+console.log();
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN } = googleInfos;
 const transport = mail.transport;
-
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
@@ -15,42 +16,48 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
-const MailDev = require("maildev");
-const maildev = new MailDev();
-maildev.listen();
-maildev.on("new", function (email) {
-  console.log('emaillyou have a new email', email);
-});
-
 async function getTransport() {
   let transporter;
-  const accessToken = await oAuth2Client.getAccessToken();
+  console.log('init', transport);
+  console.log('REFRESH_TOKEN REFRESH_TOKEN', REFRESH_TOKEN);
+  let accessToken;
+  try  {
+    accessToken = await oAuth2Client.getAccessToken();
+  } catch(err) {
+    console.error('[ACCESS TOKEN oAuth2Client]', err);
+    throw err;
+  }
 
   // create Nodemailer SES transporter
-  
+  console.log('before', transport);
   switch (transport) {
-      case 'sendgrid':
-        transporter = nodemailer.createTransport(sgTransport(sendgrid));
-        break;
-      case 'gmail':
-        transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            type: 'OAuth2',
-            user: 'pereira.pascal@gmail.com',
-            clientId: CLIENT_ID,
-            clientSecret: CLIENT_SECRET,
-            refreshToken: REFRESH_TOKEN,
-            accessToken: accessToken,
-          },
-        });
+    case 'sendgrid':
+      transporter = nodemailer.createTransport(sgTransport(sendgrid));
+      break;
+    case 'gmail':
+      console.log('transporter', transport);
+      transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          type: 'OAuth2',
+          user: 'pereira.pascal@gmail.com',
+          clientId: CLIENT_ID,
+          clientSecret: CLIENT_SECRET,
+          refreshToken: REFRESH_TOKEN,
+          accessToken: accessToken,
+        },
+      });
 
-
-        break;
-      case 'maildev':
-      default:
-        transporter = nodemailer.createTransport(mail.options);
-        break;
+      break;
+    case 'maildev':
+      maildev.listen();
+      maildev.on("new", function (email) {
+        console.log('emaillyou have a new email', email);
+      });
+      break;
+    default:
+      transporter = nodemailer.createTransport(mail.options);
+      break;
   }
   return transporter;
 }
@@ -58,14 +65,12 @@ async function getTransport() {
 async function sendEmail(recipient, subject, message) {
   try {
     const transport = await getTransport();
-
     const mailOptions = {
       from: 'pereira.pascal@gmail.com',
       to: recipient,
       subject,
       text: message,
     };
-
     const result = await transport.sendMail(mailOptions);
     return result;
   } catch (error) {
