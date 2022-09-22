@@ -42,7 +42,6 @@ function getGoogleUrl() {
 
 async function getGoogleAccountFromToken(token) {
   const auth = createConnection();
-  console.log('toooooooooo', token);
   try {
     auth.setCredentials({
       access_token: token,

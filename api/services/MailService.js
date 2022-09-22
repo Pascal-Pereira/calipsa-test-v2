@@ -6,7 +6,6 @@ const config = require('../local.config');
 const MailDev = require("maildev");
 const maildev = new MailDev();
 const { googleInfos , sendgrid, mail } = config;
-console.log();
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, REFRESH_TOKEN } = googleInfos;
 const transport = mail.transport;
 const oAuth2Client = new google.auth.OAuth2(
@@ -18,8 +17,6 @@ oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 async function getTransport() {
   let transporter;
-  console.log('init', transport);
-  console.log('REFRESH_TOKEN REFRESH_TOKEN', REFRESH_TOKEN);
   let accessToken;
   try  {
     accessToken = await oAuth2Client.getAccessToken();
@@ -29,13 +26,11 @@ async function getTransport() {
   }
 
   // create Nodemailer SES transporter
-  console.log('before', transport);
   switch (transport) {
     case 'sendgrid':
       transporter = nodemailer.createTransport(sgTransport(sendgrid));
       break;
     case 'gmail':
-      console.log('transporter', transport);
       transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -52,7 +47,7 @@ async function getTransport() {
     case 'maildev':
       maildev.listen();
       maildev.on("new", function (email) {
-        console.log('emaillyou have a new email', email);
+        console.log('You have a new email', email);
       });
       break;
     default:

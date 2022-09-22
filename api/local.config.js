@@ -8,7 +8,7 @@ module.exports = {
         REFRESH_TOKEN: '1//04KRX93bm-WmjCgYIARAAGAQSNwF-L9IrjBQ8i9w6prJzXJlevXlSSVvWrZ0wCfXeedIkKApopclqFtRMC5weO_9DeFMQfOdLJBk'
     },
     mail: {
-        transport: 'gmail',//'maildev', //'gmail', // 'sendgrid'
+        transport: 'maildev',//'maildev', //'gmail', // 'sendgrid'
         protocol: 'SMTP',
         options: {
             host: '127.0.0.1',
