@@ -1,0 +1,12 @@
+version: '2'
+services:
+  front:
+    container_name: freelanceo-front
+    image: ${DOCKER_FRONT_IMAGE:-registry.dev.enyosolutions.com/freelanceo/front}
+    build:
+      context: .
+      network: host
+    restart: always
+    expose:
+      - '8000'
+#    scale: 3

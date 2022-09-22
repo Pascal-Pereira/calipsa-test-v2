@@ -1,3 +1,10 @@
+api/dist
+node_modules
+*node_modules
+api/.env
+api/local.config.js
+
+
 # Logs
 logs
 *.log
