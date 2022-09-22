@@ -1,14 +1,12 @@
 <!-- eslint-disable prettier/prettier -->
 <template>
   <main class="app">
-    <section class="greeting">
-      <h2 class="title">Email Dashboard</h2>
+    <section class="dashboard-title">
+      <h2 class="title">Email Dashboard, please enter an email address</h2>
     </section>
 
-    <section class="create-todo">
-      <h3>Please, enter an email</h3>
-
-      <form id="new-todo-form" @submit.prevent="addEmail">
+    <section class="create-email">
+      <form id="new-mail-form" @submit.prevent="addEmail">
         <input
           id="email-input"
           type="email"
@@ -26,16 +24,15 @@
       </form>
     </section>
 
-    <section class="todo-list">
-      <h3>Email List</h3>
-      <div class="list" id="todo-list">
+    <section class="email-list">
+      <div class="list" id="email-list">
         <div class="todo-item" v-for="item of emailList" :key="item.id">
           <div class="todo-content">
             <input
               :id="item.id"
               type="email"
               v-model="item.email"
-              @change="(event) => handleEmail(event, item.id)"
+              @change="(event) => handleUpdateEmail(event, item.id)"
             />
           </div>
 
@@ -54,52 +51,23 @@
       </div>
     </section>
   </main>
-  <div v-show="modalOpened" class="container">
-    <form @submit.prevent="sendEmail">
-      <label>Email</label>
-      <input
-        type="email"
-        v-model="emailInModal.recipient"
-        name="email"
-        placeholder="Your Email"
-        @change="
-          () => setInfoToLocalStorage('recipient', emailInModal.recipient)
-        "
-      />
-      <label>Subject</label>
-      <input
-        type="text"
-        v-model="emailInModal.subject"
-        name="subject"
-        placeholder="Your subject"
-        @change="() => setInfoToLocalStorage('subject', emailInModal.subject)"
-      />
-      <label>Message</label>
-      <textarea
-        name="message"
-        v-model="emailInModal.message"
-        cols="30"
-        rows="5"
-        placeholder="Please write your Message"
-        @change="() => setInfoToLocalStorage('message', emailInModal.message)"
-      >
-      </textarea>
-
-      <input type="submit" value="Send" />
-
-      <div class="actions">
-        <button type="button" class="delete" @click="closeModal()">Close</button>
-      </div>
-    </form>
-  </div>
+  <ModalEmailForm
+    v-if="modalOpened"
+    :modalOpened="modalOpened"
+    :emailInModal="emailInModal"
+    @onCloseModal="closeModal"
+  >
+  </ModalEmailForm>
 </template>
 
 <script>
+import ModalEmailForm from "../components/modalEmailForm.vue";
 import axios from "axios";
-//import EmailForm from "../components/EmailForm";
 
 export default {
-  // components: { EmailForm },
+  components: {
+    ModalEmailForm: ModalEmailForm,
+  },
   data() {
     return {
       modalOpened: false,
@@ -115,16 +83,10 @@ export default {
       },
     };
   },
-  computed: {
-    displayFacebookButton() {
-      return this.config.features.facebookLogin;
-    },
-  },
+  computed: {},
   mounted() {
+    this.modalOpened = false;
     this.currentEmailInput.email = localStorage.getItem("currentEmail");
-    this.emailInModal.recipient = localStorage.getItem("recipient");
-    this.emailInModal.subject = localStorage.getItem("subject");
-    this.emailInModal.message = localStorage.getItem("message");
     const url = "http://localhost:3000/email";
     // const url = `${process.env.BASEURL}/email`;
     axios
@@ -157,20 +119,16 @@ export default {
         });
     },
     openEmailModal(emailObj) {
-      this.setInfoToLocalStorage("recipient", emailObj.email);
       this.modalOpened = true;
       this.emailInModal = {
         id: emailObj.id,
         recipient: emailObj.email,
-        subject: emailObj.subject,
       };
     },
     closeModal() {
       this.modalOpened = false;
     },
-    handleEmail(id) {
-      console.log("innnnnnnnnnnnnnnnn", id);
-    },
+    handleUpdateEmail(id) {},
     addEmail() {
       const url = "http://localhost:3000/email";
       axios
@@ -178,6 +136,7 @@ export default {
         .then((res) => {
           if (res && res.data && res.data) {
             this.emailList.push(res.data);
+            this.currentEmailInput.email = "";
           }
         })
         .catch((err) => {
@@ -203,6 +162,20 @@ export default {
 </script>
 
 <style>
+.dashboard-title {
+  display: flex;
+  justify-content: center;
+}
+.create-email {
+  min-width: 30vw;
+  display: flex;
+  justify-content: center;
+}
+#email-input {
+  border: 2px solid blue;
+  height: 50px;
+  width: 300px;
+}
 .dashboard {
   display: flex;
   border: 1px solid red;
@@ -213,7 +186,6 @@ export default {
 }
 .email-list {
   display: block;
-  border: 1px solid blueviolet;
 }
 
 .email-item {
@@ -225,49 +197,5 @@ export default {
     display: flex;
     align-items: center;
   }
-}
-* {
-  box-sizing: border-box;
-}
-
-label {
-  float: left;
-}
-input[type="text"],
-[type="email"],
-textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-top: 6px;
-  margin-bottom: 16px;
-  resize: vertical;
-}
-
-input[type="submit"] {
-  background-color: #4caf50;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover {
-  background-color: #b8c7b9;
-}
-
-.container {
-  display: block;
-  margin: auto;
-  text-align: center;
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-  width: 50%;
-  top: -53vh;
-  position: relative;
 }
 </style>

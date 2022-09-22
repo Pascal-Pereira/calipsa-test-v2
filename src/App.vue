@@ -1,18 +1,16 @@
-<script setup>
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.png" width="300" height="150" />
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/dashboard">Dashboard</RouterLink>
-      </nav>
-    </div>
-  </header>
-  <RouterView />
+  <div class="wrapper">
+    <Dashboard />
+  </div>
 </template>
+
+<script>
+import Dashboard from "./views/dashboard.vue";
+
+export default {
+  components: { Dashboard },
+};
+</script>
 
 <style scoped>
 header {
@@ -51,6 +49,10 @@ nav a:first-of-type {
 }
 
 @media (min-width: 1024px) {
+    .wrapper {
+    width: 50vw;
+    margin: 0 auto;
+  }
   header {
     display: flex;
     place-items: center;

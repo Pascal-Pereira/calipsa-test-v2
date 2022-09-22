@@ -47,7 +47,7 @@ async function getTransport() {
 
 
         break;
-      case 'smtp':
+      case 'maildev':
       default:
         transporter = nodemailer.createTransport(mail.options);
         break;

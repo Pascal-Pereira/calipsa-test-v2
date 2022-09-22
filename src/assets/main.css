@@ -1,8 +1,8 @@
 :root {
-	--primary: #EA40A4;
+	--primary: #1F0E78;
 	--business: #3A82EE;
 	--personal: var(--primary);
-	--light: #EEE;
+	--light: #847DAB;
 	--grey: #888;
 	--dark: #313154;
 	--danger: #ff5b57;
@@ -71,7 +71,7 @@ h4 {
 	font-weight: 700;
 }
 
-.create-todo input[type="text"] {
+.create-email input[type="text"] {
 	display: block;
 	width: 100%;
 	font-size: 1.125rem;
@@ -83,14 +83,14 @@ h4 {
 	margin-bottom: 1.5rem;
 }
 
-.create-todo .options {
+.create-email .options {
 	display: grid;
 	grid-template-columns: repeat(2, 1fr);
 	grid-gap: 1rem;
 	margin-bottom: 1.5rem;
 }
 
-.create-todo .options label {
+.create-email .options label {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -104,7 +104,6 @@ h4 {
 
 input[type="radio"],
 input[type="checkbox"] {
-	display: none;
 }
 
 .bubble {
@@ -146,34 +145,48 @@ input:checked ~ .bubble::after {
 	opacity: 1;
 }
 
-.create-todo .options label div {
+.create-email .options label div {
 	color: var(--dark);
 	font-size: 1.125rem;
 	margin-top: 1rem;
 }
 
-.create-todo input[type="submit"] {
+.create-email input[type="submit"] {
 	display: block;
 	width: 100%;
 	font-size: 1.125rem;
 	padding: 1rem 1.5rem;
 	color: #FFF;
 	background-color: var(--primary);
-	border-radius: 0.5rem;
+	border-radius: 3%;
 	box-shadow: var(--personal-glow);
 	cursor: pointer;
 	transition: 0.2s ease-in-out;
+	min-width: 50px;
+}
+.close-modal {
+	min-width: 50px;
+	display: block;
+	width: auto;
+	font-size: 13px;
+	padding: 1rem 1rem;
+	color: #FFF;
+
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: 0.2s ease-in-out;
+	margin-left: 10px;
+	border-radius: 10%;
 }
 
-.create-todo input[type="submit"]:hover {
-	opacity: 0.75;
+.close-modal:hover {
+	background-color: var(--danger);
 }
-
-.todo-list .list {
+.email-list .list {
 	margin: 1rem 0;
 } 
 
-.todo-list .todo-item {
+.email-list .todo-item {
 	display: flex;
 	align-items: center;
 	background-color: #FFF;
